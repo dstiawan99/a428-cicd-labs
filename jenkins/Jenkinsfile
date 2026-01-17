@@ -2,6 +2,7 @@ pipeline {
     agent any
     environment {
         CI = 'true'
+        NODE_OPTIONS = '--openssl-legacy-provider'
     }
     stages {
         stage('Build') {
