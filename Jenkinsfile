@@ -15,11 +15,16 @@ pipeline {
                 bat 'npm test -- --passWithNoTests'
             }
         }
-        stage('Deliver') {
+        stage('Manual Approval') {
+            steps {
+                input message: 'Lanjutkan ke tahap Deploy?'
+            }
+        }
+        stage('Deploy') {
             steps {
                 bat 'npm run build'
                 bat 'start /B npm start'
-                input message: 'Finished using the website? (Click "Proceed" to continue)'
+                bat 'ping -n 61 127.0.0.1 > nul'
                 bat 'taskkill /F /IM node.exe || exit /b 0'
             }
         }
