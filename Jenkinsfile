@@ -7,12 +7,12 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                bat 'npm install'
+                sh 'npm install'
             }
         }
         stage('Test') {
             steps {
-                bat 'npm test -- --passWithNoTests'
+                sh 'npm test -- --passWithNoTests'
             }
         }
         stage('Manual Approval') {
@@ -22,10 +22,10 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                bat 'npm run build'
-                bat 'start /B npm start'
-                bat 'ping -n 61 127.0.0.1 > nul'
-                bat 'taskkill /F /IM node.exe || exit /b 0'
+                sh 'npm run build'
+                sh 'nohup npm start &'
+                sh 'sleep 60'
+                sh 'pkill -f "react-scripts start" || true'
             }
         }
     }
